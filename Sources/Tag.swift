@@ -90,6 +90,7 @@ extension Tag {
             let inputURL = NSURL(fileURLWithPath: tagOptions.path)
             
             var tags = try inputURL.getTags()
+            // Only remove tags that does not exist
             tags.removeAll(where: { addOptions.tagNames.contains($0) })
             
             try inputURL.setTags(tags)
