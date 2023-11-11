@@ -66,12 +66,18 @@ extension Tag {
         
         mutating func run() throws {
             let inputURL = NSURL(fileURLWithPath: tagOptions.path)
-            // TODO: Avoid adding duplicate tags
-            let currentTags = try inputURL.getTags()
-            let newTags = currentTags + addOptions.tagNames
+            
+            var tags = try inputURL.getTags()
 
-            try inputURL.setTags(newTags)
-            print("Set tags \(newTags) to \(inputURL.relativeString)")
+            // Avoid adding duplicate tags
+            for tag in addOptions.tagNames {
+                if (!tags.contains(tag)) {
+                    tags.append(tag)
+                }
+            }
+
+            try inputURL.setTags(tags)
+            print("Set tags \(tags) to \(inputURL.relativeString)")
         }
     }
     
@@ -90,7 +96,7 @@ extension Tag {
             let inputURL = NSURL(fileURLWithPath: tagOptions.path)
             
             var tags = try inputURL.getTags()
-            // Only remove tags that does not exist
+            // Only remove tags that exist
             tags.removeAll(where: { addOptions.tagNames.contains($0) })
             
             try inputURL.setTags(tags)
