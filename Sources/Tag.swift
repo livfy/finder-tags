@@ -17,31 +17,14 @@ func color(of tagName: String) -> TagColor {
 }
 
 extension NSURL {
-    var tags: [String] {
-        get {
-            do {
-                var rsrc: AnyObject?
-                try self.getResourceValue(&rsrc, forKey: .tagNamesKey)
-                if let tagNamesKey = rsrc as? [String] {
-                    return tagNamesKey
-                }
-            } catch {
-                print(error)
-            }
-            return []
-        }
-        set(tagNames) {
-            do {
-                try self.setResourceValue(tagNames, forKey: .tagNamesKey)
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    
     func setTags(_ tagNames: [String]) throws {
         try self.setResourceValue(tagNames, forKey: .tagNamesKey)
+    }
+
+    func getTags() throws -> [String] {
+        let attributes = try self.resourceValues(forKeys: [.tagNamesKey])
+        let tagNames = attributes.first?.value as? [String]
+        return tagNames ?? [];
     }
 }
 
@@ -65,7 +48,7 @@ extension Tag {
         
         mutating func run() throws {
             let inputURL = NSURL(fileURLWithPath: options.path)
-            let tagNames = inputURL.tags
+            let tagNames = try inputURL.getTags()
             print(tagNames)
         }
     }
@@ -83,9 +66,12 @@ extension Tag {
         
         mutating func run() throws {
             let inputURL = NSURL(fileURLWithPath: tagOptions.path)
-            let tags = inputURL.tags + addOptions.tagNames
-            try inputURL.setTags(tags)
-            print("Set tags \(inputURL.tags) to \(inputURL.relativeString)")
+            // TODO: Avoid adding duplicate tags
+            let currentTags = try inputURL.getTags()
+            let newTags = currentTags + addOptions.tagNames
+
+            try inputURL.setTags(newTags)
+            print("Set tags \(newTags) to \(inputURL.relativeString)")
         }
     }
     
@@ -103,7 +89,7 @@ extension Tag {
         mutating func run() throws {
             let inputURL = NSURL(fileURLWithPath: tagOptions.path)
             
-            var tags = inputURL.tags
+            var tags = try inputURL.getTags()
             tags.removeAll(where: { addOptions.tagNames.contains($0) })
             
             try inputURL.setTags(tags)
