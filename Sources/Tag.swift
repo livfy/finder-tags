@@ -64,11 +64,9 @@ extension Tag {
         @OptionGroup var options: Tag.Options
         
         mutating func run() throws {
-            let tagNames = try URL(fileURLWithPath: options.path).resourceValues(forKeys: [.tagNamesKey]).tagNames ?? []
-            
-            for name in tagNames {
-                print(name)
-            }
+            let inputURL = NSURL(fileURLWithPath: options.path)
+            let tagNames = inputURL.tags
+            print(tagNames)
         }
     }
     
