@@ -1,21 +1,6 @@
 import ArgumentParser
 import Foundation
 
-enum TagColor: Int {
-    case none
-    case grey
-    case green
-    case purple
-    case blue
-    case yellow
-    case red
-    case orange
-}
-
-func color(of tagName: String) -> TagColor {
-    TagColor.none
-}
-
 extension NSURL {
     func setTags(_ tagNames: [String]) throws {
         try self.setResourceValue(tagNames, forKey: .tagNamesKey)
