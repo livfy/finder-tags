@@ -1,18 +1,6 @@
 import ArgumentParser
 import Foundation
 
-extension NSURL {
-    func setTags(_ tagNames: [String]) throws {
-        try self.setResourceValue(tagNames, forKey: .tagNamesKey)
-    }
-
-    func getTags() throws -> [String] {
-        let attributes = try self.resourceValues(forKeys: [.tagNamesKey])
-        let tagNames = attributes.first?.value as? [String]
-        return tagNames ?? [];
-    }
-}
-
 @main
 struct Tag: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -88,5 +76,17 @@ extension Tag {
             print("Removed tags")
             print("Current tags: \(tags)")
         }
+    }
+}
+
+extension NSURL {
+    func setTags(_ tagNames: [String]) throws {
+        try self.setResourceValue(tagNames, forKey: .tagNamesKey)
+    }
+
+    func getTags() throws -> [String] {
+        let attributes = try self.resourceValues(forKeys: [.tagNamesKey])
+        let tagNames = attributes.first?.value as? [String]
+        return tagNames ?? [];
     }
 }
