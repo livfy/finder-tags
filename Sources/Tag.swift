@@ -10,17 +10,13 @@ struct Tag: ParsableCommand {
 }
 
 extension Tag {
-    struct Options: ParsableArguments {
-        @Argument(help: "Path")
-        var path: String
-    }
-    
     struct List: ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "List tags.")
-        @OptionGroup var options: Tag.Options
+        @Argument(help: "Path to a folder for file to look for tags")
+        var path: String?
         
         mutating func run() throws {
-            let inputURL = NSURL(fileURLWithPath: options.path)
+            let inputURL = NSURL(fileURLWithPath: path ?? FileManager.default.currentDirectoryPath)
             let tagNames = try inputURL.getTags()
             print(tagNames)
         }
@@ -29,21 +25,19 @@ extension Tag {
     struct Add: ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Add tags.")
         
-        struct Options: ParsableArguments {
-            @Argument(help: "List of tags to add.")
-            var tagNames: [String]
-        }
-        
-        @OptionGroup var tagOptions: Tag.Options
-        @OptionGroup var addOptions: Add.Options
+        @Argument(help: "List of tags to add.")
+        var tagNames: [String]
+
+        @Option(name: [.customShort("p"), .long])
+        var path: String?
         
         mutating func run() throws {
-            let inputURL = NSURL(fileURLWithPath: tagOptions.path)
+            let inputURL = NSURL(fileURLWithPath: path ?? FileManager.default.currentDirectoryPath)
             
             var tags = try inputURL.getTags()
 
             // Avoid adding duplicate tags
-            for tag in addOptions.tagNames {
+            for tag in tagNames {
                 if (!tags.contains(tag)) {
                     tags.append(tag)
                 }
@@ -56,21 +50,18 @@ extension Tag {
     
     struct Remove: ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Remove tags.")
-        
-        struct Options: ParsableArguments {
-            @Argument(help: "List of tags to remove.")
-            var tagNames: [String]
-        }
-        
-        @OptionGroup var tagOptions: Tag.Options
-        @OptionGroup var addOptions: Add.Options
+        @Argument(help: "List of tags to remove.")
+        var tagNames: [String]
+
+        @Option(name: [.customShort("p"), .long])
+        var path: String?
         
         mutating func run() throws {
-            let inputURL = NSURL(fileURLWithPath: tagOptions.path)
+            let inputURL = NSURL(fileURLWithPath: path ?? FileManager.default.currentDirectoryPath)
             
             var tags = try inputURL.getTags()
             // Only remove tags that exist
-            tags.removeAll(where: { addOptions.tagNames.contains($0) })
+            tags.removeAll(where: { tagNames.contains($0) })
             
             try inputURL.setTags(tags)
             print("Removed tags")
