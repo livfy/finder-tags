@@ -18,7 +18,11 @@ extension Tag {
         mutating func run() throws {
             let inputURL = NSURL(fileURLWithPath: path ?? FileManager.default.currentDirectoryPath)
             let tagNames = try inputURL.getTags()
-            print(tagNames)
+            if (tagNames.isEmpty) {
+                print("\"\(inputURL.lastPathComponent ?? "")\" has no tags.")
+            } else {
+                print(tagNames.joined(separator: ", "))
+            }
         }
     }
     
@@ -44,7 +48,7 @@ extension Tag {
             }
 
             try inputURL.setTags(tags)
-            print("Set tags \(tags) to \(inputURL.relativeString)")
+            print("Added \(tagNames.joined(separator: ", ")) tag(s) to \"\(inputURL.lastPathComponent ?? "")\".")
         }
     }
     
@@ -64,8 +68,7 @@ extension Tag {
             tags.removeAll(where: { tagNames.contains($0) })
             
             try inputURL.setTags(tags)
-            print("Removed tags")
-            print("Current tags: \(tags)")
+            print("Removed \(tagNames.joined(separator: ", ")) tag(s) from \"\(inputURL.lastPathComponent ?? "")\".")
         }
     }
 }
