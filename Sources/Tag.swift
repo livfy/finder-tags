@@ -29,7 +29,7 @@ extension Tag {
     struct Add: ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Add tags.")
         
-        @Argument(help: "List of tags to add.")
+        @Option(name: [.short, .customLong("tag")], help: "List of tags to add.")
         var tagNames: [String]
 
         @Option(name: [.customShort("p"), .long], help:  "Path to a folder for file to add tags to")
@@ -54,7 +54,7 @@ extension Tag {
     
     struct Remove: ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Remove tags.")
-        @Argument(help: "List of tags to remove.")
+        @Option(name: [.short, .customLong("tag")], help: "List of tags to remove.")
         var tagNames: [String]
 
         @Option(name: [.customShort("p"), .long], help: "Path to a folder for file to remove tags from")
