@@ -11,8 +11,8 @@ struct Tag: ParsableCommand {
 
 extension Tag {
     struct List: ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "List tags.")
-        @Option(name: [.customShort("p"), .long], help: "Path to a folder for file to look for tags")
+        static var configuration = CommandConfiguration(abstract: "List tags for a file or folder.")
+        @Option(name: [.customShort("p"), .long], help: "Path to a folder or file")
         var path: String?
         
         mutating func run() throws {
@@ -27,12 +27,12 @@ extension Tag {
     }
     
     struct Add: ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Add tags.")
+        static var configuration = CommandConfiguration(abstract: "Add tags to a file or folder.")
         
-        @Option(name: [.short, .customLong("tag")], help: "List of tags to add.")
+        @Option(name: [.short, .customLong("tag")], help: "List of tags.")
         var tagNames: [String]
 
-        @Option(name: [.customShort("p"), .long], help:  "Path to a folder for file to add tags to")
+        @Option(name: [.customShort("p"), .long], help: "Path to a folder for file")
         var path: String?
         
         mutating func run() throws {
@@ -53,11 +53,11 @@ extension Tag {
     }
     
     struct Remove: ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Remove tags.")
-        @Option(name: [.short, .customLong("tag")], help: "List of tags to remove.")
+        static var configuration = CommandConfiguration(abstract: "Remove tags from a file or folder.")
+        @Option(name: [.short, .customLong("tag")], help: "List of tags.")
         var tagNames: [String]
 
-        @Option(name: [.customShort("p"), .long], help: "Path to a folder for file to remove tags from")
+        @Option(name: [.customShort("p"), .long], help: "Path to a folder for file")
         var path: String?
         
         mutating func run() throws {
