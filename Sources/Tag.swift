@@ -12,7 +12,7 @@ struct Tag: ParsableCommand {
 extension Tag {
     struct List: ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "List tags.")
-        @Option(name: [.customShort("p"), .long])
+        @Option(name: [.customShort("p"), .long], help: "Path to a folder for file to look for tags")
         var path: String?
         
         mutating func run() throws {
@@ -32,7 +32,7 @@ extension Tag {
         @Argument(help: "List of tags to add.")
         var tagNames: [String]
 
-        @Option(name: [.customShort("p"), .long])
+        @Option(name: [.customShort("p"), .long], help:  "Path to a folder for file to add tags to")
         var path: String?
         
         mutating func run() throws {
@@ -57,7 +57,7 @@ extension Tag {
         @Argument(help: "List of tags to remove.")
         var tagNames: [String]
 
-        @Option(name: [.customShort("p"), .long])
+        @Option(name: [.customShort("p"), .long], help: "Path to a folder for file to remove tags from")
         var path: String?
         
         mutating func run() throws {
