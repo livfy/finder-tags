@@ -12,7 +12,7 @@ struct Tag: ParsableCommand {
 extension Tag {
     struct List: ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "List tags.")
-        @Argument(help: "Path to a folder for file to look for tags")
+        @Option(name: [.customShort("p"), .long])
         var path: String?
         
         mutating func run() throws {
