@@ -6,7 +6,7 @@ struct Tag: ParsableCommand {
     static var configuration = CommandConfiguration(
         abstract: "A utility for managing finder tags",
         subcommands: [List.self, Add.self, Remove.self],
-        defaultSubcommand: List.self)
+        defaultSubcommand: Add.self)
 }
 
 extension Tag {
