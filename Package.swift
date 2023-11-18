@@ -4,12 +4,9 @@
 import PackageDescription
 
 let package = Package(
-    name: "tag",
+    name: "finder-tags",
     platforms: [
         .macOS(.v14)
-    ],
-    products: [
-        .executable(name: "tag", targets: ["tag"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
